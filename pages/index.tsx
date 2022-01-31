@@ -1,39 +1,8 @@
 import type { NextPage } from 'next';
-import { ReactChild, ReactHTML, useState } from 'react';
+import { ReactChild, useState } from 'react';
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import { useRouter } from 'next/router';
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Fira Code', sans-serif;
-      }
-      /* App fit Height */
-      html,
-      body,
-      #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */
-    `}</style>
-  );
-}
 
 const Title = (props: { children: ReactChild; tag: any }) => {
   const Tag = props.tag || 'h1';
@@ -52,14 +21,11 @@ const Title = (props: { children: ReactChild; tag: any }) => {
 };
 
 const Homepage: NextPage = () => {
-  // const username = 'guijun13';
-
   const [username, setUsername] = useState('');
   const router = useRouter();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex',
