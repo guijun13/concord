@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { ReactChild } from 'react';
+import { ReactChild, ReactHTML, useState } from 'react';
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 
@@ -51,7 +51,9 @@ const Title = (props: { children: ReactChild; tag: any }) => {
 };
 
 const Homepage: NextPage = () => {
-  const username = 'guijun13';
+  // const username = 'guijun13';
+
+  const [username, setUsername] = useState('');
 
   return (
     <>
@@ -109,7 +111,7 @@ const Homepage: NextPage = () => {
             </Text>
 
             <TextField
-              name="a"
+              name="text field"
               fullWidth
               textFieldColors={{
                 positive: {},
@@ -120,6 +122,10 @@ const Homepage: NextPage = () => {
                   mainColorHighlight: appConfig.theme.colors.primary['500'],
                   backgroundColor: appConfig.theme.colors.neutrals['800'],
                 },
+              }}
+              value={username}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setUsername(event.target.value);
               }}
             />
             <Button
@@ -158,7 +164,9 @@ const Homepage: NextPage = () => {
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={
+                username ? `https://github.com/${username}.png` : `http://via.placeholder.com/1000`
+              }
             />
             <Text
               variant="body4"
