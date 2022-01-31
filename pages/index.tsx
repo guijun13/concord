@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { ReactChild, ReactHTML, useState } from 'react';
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import { useRouter } from 'next/router';
 
 function GlobalStyle() {
   return (
@@ -54,6 +55,7 @@ const Homepage: NextPage = () => {
   // const username = 'guijun13';
 
   const [username, setUsername] = useState('');
+  const router = useRouter();
 
   return (
     <>
@@ -100,6 +102,10 @@ const Homepage: NextPage = () => {
               width: { xs: '100%', sm: '50%' },
               textAlign: 'center',
               marginBottom: '32px',
+            }}
+            onSubmit={(event: React.ChangeEvent<HTMLInputElement>) => {
+              event.preventDefault();
+              router.push('/chat');
             }}
           >
             <Title tag="h2">Welcome back!</Title>
