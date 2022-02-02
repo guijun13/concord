@@ -145,6 +145,8 @@ function MessageList(props) {
             <Box
               styleSheet={{
                 marginBottom: '8px',
+                display: 'flex',
+                flexDirection: 'inline',
               }}
             >
               <Image
@@ -167,7 +169,10 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-                {new Date().toLocaleDateString()}
+                {new Date().toLocaleDateString(navigator.language, {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
               </Text>
             </Box>
             {message.text}
