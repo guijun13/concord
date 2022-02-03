@@ -14,9 +14,10 @@ const Chat: NextPage = () => {
   const [messagesList, setMessagesList] = useState([]);
 
   useEffect(() => {
-    const supabaseData = supabaseClient
+    supabaseClient
       .from('messages')
       .select('*')
+      .order('id', { ascending: false })
       .then(({ data }) => {
         setMessagesList(data);
       });
@@ -24,11 +25,17 @@ const Chat: NextPage = () => {
 
   function handleNewMessage(newMessage: string) {
     const message = {
-      id: messagesList.length,
       from: 'guijun13',
       text: newMessage,
     };
-    setMessagesList([message, ...messagesList]);
+
+    supabaseClient
+      .from('messages')
+      .insert([message])
+      .then(({ data }) => {
+        setMessagesList([data[0], ...messagesList]);
+      });
+
     setMessage('');
   }
 
