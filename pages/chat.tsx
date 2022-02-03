@@ -1,11 +1,26 @@
 import { NextPage } from 'next';
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
-import React, { ReactPropTypes, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
 const Chat: NextPage = () => {
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState([]);
+
+  useEffect(() => {
+    const supabaseData = supabaseClient
+      .from('messages')
+      .select('*')
+      .then(({ data }) => {
+        setMessagesList(data);
+      });
+  }, []);
 
   function handleNewMessage(newMessage: string) {
     const message = {
@@ -115,7 +130,6 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log(props.messagesList);
   return (
     <Box
       tag="ul"
@@ -158,7 +172,7 @@ function MessageList(props) {
                   display: 'inline-block',
                   marginRight: '8px',
                 }}
-                src={`https://github.com/guijun13.png`}
+                src={`https://github.com/${message.from}.png`}
               />
               <Text tag="strong">{message.from}</Text>
               <Text
