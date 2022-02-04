@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
+import ButtonSendSticker from '../src/components/ButtonSendSticker';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -114,6 +115,11 @@ const Chat: NextPage = () => {
                 }
               }}
             />
+            <ButtonSendSticker
+              onStickerClick={(sticker) => {
+                handleNewMessage(`:sticker: ${sticker}`);
+              }}
+            />
           </Box>
         </Box>
       </Box>
@@ -200,7 +206,11 @@ function MessageList(props) {
                 })}
               </Text>
             </Box>
-            {message.text}
+            {message.text.startsWith(':sticker:') ? (
+              <Image alt="sticker" src={message.text.replace(':sticker:', '')} />
+            ) : (
+              message.text
+            )}
           </Text>
         );
       })}
