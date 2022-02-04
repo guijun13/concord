@@ -11,6 +11,15 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
+function listenRealTimeMessages(addMessage: { (newMessage: any): void; (arg0: any): void }) {
+  return supabaseClient
+    .from('messages')
+    .on('INSERT', (res) => {
+      addMessage(res.new);
+    })
+    .subscribe();
+}
+
 const Chat: NextPage = () => {
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState([]);
@@ -26,6 +35,13 @@ const Chat: NextPage = () => {
       .then(({ data }) => {
         setMessagesList(data);
       });
+
+    listenRealTimeMessages((newMessage: string) => {
+      // handleNewMessage(newMessage);
+      setMessagesList((actualMessagesList) => {
+        return [newMessage, ...actualMessagesList];
+      });
+    });
   }, []);
 
   function handleNewMessage(newMessage: string) {
@@ -37,9 +53,7 @@ const Chat: NextPage = () => {
     supabaseClient
       .from('messages')
       .insert([message])
-      .then(({ data }) => {
-        setMessagesList([data[0], ...messagesList]);
-      });
+      .then(({ data }) => {});
 
     setMessage('');
   }
@@ -146,7 +160,7 @@ function Header() {
   );
 }
 
-function MessageList(props) {
+function MessageList(props: { messagesList: any[] }) {
   return (
     <Box
       tag="ul"
@@ -159,61 +173,73 @@ function MessageList(props) {
         marginBottom: '16px',
       }}
     >
-      {props.messagesList.map((message) => {
-        return (
-          <Text
-            key={message.id}
-            tag="li"
-            styleSheet={{
-              borderRadius: '5px',
-              padding: '6px',
-              marginBottom: '12px',
-              hover: {
-                backgroundColor: appConfig.theme.colors.neutrals[700],
-              },
-            }}
-          >
-            <Box
+      {props.messagesList.map(
+        (message: {
+          id: React.Key | null | undefined;
+          from:
+            | boolean
+            | React.ReactChild
+            | React.ReactFragment
+            | React.ReactPortal
+            | null
+            | undefined;
+          text: {} | null | undefined;
+        }) => {
+          return (
+            <Text
+              key={message.id}
+              tag="li"
               styleSheet={{
-                marginBottom: '8px',
-                display: 'flex',
-                flexDirection: 'inline',
+                borderRadius: '5px',
+                padding: '6px',
+                marginBottom: '12px',
+                hover: {
+                  backgroundColor: appConfig.theme.colors.neutrals[700],
+                },
               }}
             >
-              <Image
-                alt="profile-pic"
+              <Box
                 styleSheet={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  display: 'inline-block',
-                  marginRight: '8px',
+                  marginBottom: '8px',
+                  display: 'flex',
+                  flexDirection: 'inline',
                 }}
-                src={`https://github.com/${message.from}.png`}
-              />
-              <Text tag="strong">{message.from}</Text>
-              <Text
-                styleSheet={{
-                  fontSize: '10px',
-                  marginLeft: '8px',
-                  color: appConfig.theme.colors.neutrals[300],
-                }}
-                tag="span"
               >
-                {new Date().toLocaleDateString(navigator.language, {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Text>
-            </Box>
-            {message.text.startsWith(':sticker:') ? (
-              <Image alt="sticker" src={message.text.replace(':sticker:', '')} />
-            ) : (
-              message.text
-            )}
-          </Text>
-        );
-      })}
+                <Image
+                  alt="profile-pic"
+                  styleSheet={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    display: 'inline-block',
+                    marginRight: '8px',
+                  }}
+                  src={`https://github.com/${message.from}.png`}
+                />
+                <Text tag="strong">{message.from}</Text>
+                <Text
+                  styleSheet={{
+                    fontSize: '10px',
+                    marginLeft: '8px',
+                    color: appConfig.theme.colors.neutrals[300],
+                  }}
+                  tag="span"
+                >
+                  {new Date().toLocaleDateString(navigator.language, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </Box>
+              {message.text.startsWith(':sticker:') ? (
+                <Image alt="sticker" src={message.text.replace(':sticker:', '')} />
+              ) : (
+                message.text
+              )}
+            </Text>
+          );
+        }
+      )}
     </Box>
   );
 }
