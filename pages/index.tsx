@@ -71,7 +71,7 @@ const Homepage: NextPage = () => {
             }}
             onSubmit={(event: React.ChangeEvent<HTMLInputElement>) => {
               event.preventDefault();
-              router.push('/chat');
+              router.push(`/chat?username=${username}`);
             }}
           >
             <Title tag="h2">Welcome back!</Title>

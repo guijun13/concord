@@ -3,6 +3,7 @@ import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React, { useEffect, useState } from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/router';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -12,6 +13,9 @@ const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 const Chat: NextPage = () => {
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState([]);
+
+  const router = useRouter();
+  const loggedUser = router.query.username;
 
   useEffect(() => {
     supabaseClient
@@ -25,7 +29,7 @@ const Chat: NextPage = () => {
 
   function handleNewMessage(newMessage: string) {
     const message = {
-      from: 'guijun13',
+      from: loggedUser,
       text: newMessage,
     };
 
