@@ -32,9 +32,7 @@ const Chat: NextPage = () => {
       .from('messages')
       .select('*')
       .order('id', { ascending: false })
-      .then(({ data }) => {
-        setMessagesList(data);
-      });
+      .then(({ data }) => setMessagesList(data));
 
     listenRealTimeMessages((newMessage: string) => {
       // handleNewMessage(newMessage);
@@ -154,7 +152,7 @@ function Header() {
         }}
       >
         <Text variant="heading5">Chat</Text>
-        <Button variant="tertiary" colorVariant="neutral" label="Logout" href="/" />
+        <Button variant="tertiary" colorVariant="primary" label="Logout" href="/" />
       </Box>
     </>
   );
@@ -176,14 +174,8 @@ function MessageList(props: { messagesList: any[] }) {
       {props.messagesList.map(
         (message: {
           id: React.Key | null | undefined;
-          from:
-            | boolean
-            | React.ReactChild
-            | React.ReactFragment
-            | React.ReactPortal
-            | null
-            | undefined;
-          text: {} | null | undefined;
+          from: string;
+          text: string | null | undefined;
         }) => {
           return (
             <Text

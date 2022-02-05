@@ -58,60 +58,62 @@ const Homepage: NextPage = () => {
           }}
         >
           {/* Formulário */}
-          <Box
-            as="form"
-            styleSheet={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: { xs: '100%', sm: '50%' },
-              textAlign: 'center',
-              marginBottom: '32px',
-            }}
-            onSubmit={(event: React.ChangeEvent<HTMLInputElement>) => {
+          <form
+            onSubmit={(event) => {
               event.preventDefault();
               router.push(`/chat?username=${username}`);
             }}
           >
-            <Title tag="h2">Welcome back!</Title>
-            <Text
-              variant="body3"
-              styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals['300'] }}
+            <Box
+              as="div"
+              styleSheet={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                marginBottom: '32px',
+              }}
             >
-              {appConfig.name}
-            </Text>
+              <Title tag="h2">Welcome back!</Title>
+              <Text
+                variant="body3"
+                styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals['300'] }}
+              >
+                {appConfig.name}
+              </Text>
 
-            <TextField
-              name="text field"
-              fullWidth
-              textFieldColors={{
-                positive: {},
-                negative: {},
-                neutral: {
-                  textColor: appConfig.theme.colors.neutrals['200'],
-                  mainColor: appConfig.theme.colors.neutrals['900'],
-                  mainColorHighlight: appConfig.theme.colors.primary['500'],
-                  backgroundColor: appConfig.theme.colors.neutrals['800'],
-                },
-              }}
-              value={username}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setUsername(event.target.value);
-              }}
-            />
-            <Button
-              type="submit"
-              label="Entrar"
-              fullWidth
-              buttonColors={{
-                contrastColor: appConfig.theme.colors.neutrals['000'],
-                mainColor: appConfig.theme.colors.primary['500'],
-                mainColorLight: appConfig.theme.colors.primary['400'],
-                mainColorStrong: appConfig.theme.colors.primary['600'],
-              }}
-            />
-          </Box>
+              <TextField
+                name="text field"
+                fullWidth
+                textFieldColors={{
+                  positive: {},
+                  negative: {},
+                  neutral: {
+                    textColor: appConfig.theme.colors.neutrals['200'],
+                    mainColor: appConfig.theme.colors.neutrals['900'],
+                    mainColorHighlight: appConfig.theme.colors.primary['500'],
+                    backgroundColor: appConfig.theme.colors.neutrals['800'],
+                  },
+                }}
+                value={username}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setUsername(event.target.value);
+                }}
+              />
+              <Button
+                type="submit"
+                label="Entrar"
+                fullWidth
+                buttonColors={{
+                  contrastColor: appConfig.theme.colors.neutrals['000'],
+                  mainColor: appConfig.theme.colors.primary['500'],
+                  mainColorLight: appConfig.theme.colors.primary['400'],
+                  mainColorStrong: appConfig.theme.colors.primary['600'],
+                }}
+              />
+            </Box>
+          </form>
           {/* Formulário */}
 
           {/* Photo Area */}
