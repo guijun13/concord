@@ -43,7 +43,7 @@ const Homepage: NextPage = () => {
           styleSheet={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'space-evenly',
             flexDirection: {
               xs: 'column',
               sm: 'row',
@@ -86,6 +86,9 @@ const Homepage: NextPage = () => {
               <TextField
                 name="text field"
                 fullWidth
+                styleSheet={{
+                  fontSize: '14px',
+                }}
                 textFieldColors={{
                   positive: {},
                   negative: {},
@@ -96,6 +99,7 @@ const Homepage: NextPage = () => {
                     backgroundColor: appConfig.theme.colors.neutrals['800'],
                   },
                 }}
+                placeholder="Github username"
                 value={username}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setUsername(event.target.value);
@@ -151,7 +155,7 @@ const Homepage: NextPage = () => {
                 borderRadius: '1000px',
               }}
             >
-              {username}
+              {username || 'Github username'}
             </Text>
           </Box>
           {/* Photo Area */}
